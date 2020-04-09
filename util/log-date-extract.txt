@@ -1,0 +1,9 @@
+year=`date +$Y`
+mon=`date +%m`
+day=`date +%d`
+hour=`date +%H`
+min="00"
+
+hname="`hostname`"
+
+log_file=/svc/log/$1/$year$mon$day/$1$sysid.console.$year$mon$day$hour$min

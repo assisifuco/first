@@ -1,0 +1,14 @@
+#!/bin/bash
+
+DIRS=(csi dgi gmc)
+cwd=`pwd`
+tdir=~/src/fpr
+
+for d in "${DIRS[@]}"
+do
+	echo $d entered...
+	cd $d
+	echo `pwd`
+	"shell command etc..."
+	cd $cwd
+done

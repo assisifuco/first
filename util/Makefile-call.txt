@@ -1,0 +1,15 @@
+DIRS =  cis dgi esi
+.PHONY: all clean
+
+all:
+	@for d in $(DIRS); \
+	do \
+		$(MAKE) -C $$d all; \
+		if [ $$? != 0 ]; then exit 1; fi;\
+	done
+
+clean:
+	@for d in $(DIRS); \
+	do \
+		$(MAKE) -C $$d clean; \
+	done

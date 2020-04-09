@@ -1,0 +1,67 @@
+﻿1. sudo vi etc/hosts
+
+2. root 가 아닌 경우
+	sudo vi /etc/sudoers
+		ambari ALL=NOPASSWD: ALL
+
+3. ssh 키 설정
+	ssh-keygen
+	ssh-copy-id ambari@class14
+
+	cat ~/.ssh/authorized_keys
+
+4. mysql 및 JDBC 드라이버 설치
+	sudo yum install mysql
+	sudo yum install mysql-connector-java*
+
+5. mysql 서버 설치
+	sudo yum localinstall https://dev.mysql.com/get/mysql57-community-release-el7-8.noarch.rpm
+	sudo yum install mysql-community-server
+
+6. MySQL 서비스 시작 및 root 비밀번호 설정
+	grep ‘A temporary password is generated for root@localhost’ /var/log/mysqld.log |tail -1
+	sudo /usr/bin/mysql_secure_installation
+
+7. 서비스용 DB 및 계정 설정
+	CREATE USER 'hive'@'localhost' IDENTIFIED BY 'Ambari1@';
+	GRANT ALL PRIVILEGES ON *.* TO 'hive'@'localhost';
+
+	CREATE USER 'hive'@'%' IDENTIFIED BY 'Ambari1@';
+	GRANT ALL PRIVILEGES ON *.* TO 'hive'@'%';
+
+	CREATE USER 'hive'@'class15.encore.com' IDENTIFIED BY 'Ambari1@';
+	GRANT ALL PRIVILEGES ON *.* TO 'hive'@'class15.encore.com';
+
+	FLUSH PRIVILEGES;
+
+	create database hive;
+
+
+8. Ambari 설치
+8.0 방화벽 해제
+	sudo systemctl disable firewalld
+	sudo service firewalld stop
+
+8.1 레포지터리 다운로드 및 설치
+	sudo wget -nv http://public-repo-1.hortonworks.com/ambari/centos7/2.x/updates/2.7.3.0/ambari.repo -O /etc/yum.repos.d/ambari.repo
+
+	sudo yum repolist
+
+
+8.2 마스터 노드에만 Ambari-server 설치
+	sudo yum install ambari-server
+	GPG-KEY 다운로드에 대한 승인을 진행
+
+8.3 MySQL JDBC 드라이버의 경로를 지정
+	sudo ambari-server setup –jdbc-db=mysql –jdbc-driver=/usr/share/java/mysql-connector-java.jar
+
+8.4 설치 진행
+	sudo ambari-server setup
+
+8.5 Ambari-server 실행
+	sudo ambari-server start
+
+	sudo ambari-server status
+
+8.6 서버 접속
+	8080 포트

@@ -1,0 +1,9 @@
+gmcpid="`ps -e -o pid,comm | grep -w gmlc_gmc | awk '{ print $1 }'`"
+
+if [ "$gmcpid" == "" ]
+then
+	echo " not running"
+else
+	info="`ps -e -o user,pid,stime,comm | grep -w gmlc_gmc`"
+	echo " running : $info"
+fi
